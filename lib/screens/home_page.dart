@@ -16,7 +16,10 @@ class _HomePageState extends State<HomePage> {
           SliverAppBar(
             title: const Text("Pokedex"),
             backgroundColor: Colors.red,
+            floating: true,
             pinned: true,
+            snap: true,
+            centerTitle: false,
 
             actions: [
               IconButton(
@@ -30,6 +33,7 @@ class _HomePageState extends State<HomePage> {
             ],
 
             bottom: AppBar(
+              backgroundColor: Colors.red,
               title: Container(
                 width: double.infinity,
                 height: 40,
@@ -37,7 +41,8 @@ class _HomePageState extends State<HomePage> {
                 child: const Center(
                   child: TextField(
                     decoration: InputDecoration(
-                      hintText: "Search"
+                      hintText: "Search pokemon",
+                      suffixIcon: Icon(Icons.search)
                     ),
                   ),
                 ),
@@ -45,9 +50,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          SliverGrid(
-
-          )
         ],
       ),
 
