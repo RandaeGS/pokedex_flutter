@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex_flutter/graphql/client.dart';
 import 'package:pokedex_flutter/screens/home_page.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,14 +12,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Pokedex Flutter",
-      theme: ThemeData(
-        primarySwatch: Colors.red
-      ),
+    return GraphQLProvider(
+      client: setupGraphqlClient(),
 
-      home: const HomePage(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: "Pokedex Flutter",
+        theme: ThemeData(
+            primarySwatch: Colors.red
+        ),
+
+        home: const HomePage(),
+      ),
     );
   }
 }
