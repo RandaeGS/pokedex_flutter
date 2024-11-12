@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/list_pokemon.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -50,6 +51,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
+          const ListPokemon(),
         ],
       ),
 
