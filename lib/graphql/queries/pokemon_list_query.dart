@@ -1,6 +1,6 @@
 const String queryPokemonList = """
 query listPokemons {
-  pokemon_v2_pokemon {
+  pokemon_v2_pokemon(limit: 80) {
     id
     name
     pokemon_v2_pokemontypes {
@@ -8,6 +8,8 @@ query listPokemons {
         name
       }
     }
+    pokemon_v2_pokemonsprites {
+      sprites(path: "other")
+    }
   }
-}
-""";
+}""";
