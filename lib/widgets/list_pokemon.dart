@@ -100,7 +100,9 @@ class ListPokemon extends StatelessWidget {
                             children: [
                               Text(
                                 _formatPokemonNumber(number),
-                                style: Theme.of(context).textTheme.bodySmall,
+                                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                                  color: Colors.white,
+                                ),
                               ),
                               const SizedBox(height: 8),
                               Expanded(
@@ -122,6 +124,7 @@ class ListPokemon extends StatelessWidget {
                                       name.toString().toUpperCase(),
                                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                                         fontWeight: FontWeight.bold,
+                                        color: Colors.white
                                       ),
                                     ),
                                     const SizedBox(height: 4),
