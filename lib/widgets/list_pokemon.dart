@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import '../graphql/queries/pokemon_list_query.dart';
@@ -108,12 +109,16 @@ class ListPokemon extends StatelessWidget {
                               const SizedBox(height: 8),
                               Expanded(
                                 child: Center(
-                                  child: Image.network(
-                                    spriteUrl,
+                                  child: CachedNetworkImage(
+                                    imageUrl: spriteUrl,
                                     fit: BoxFit.contain,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return const Icon(Icons.broken_image, size: 96);
-                                    },
+                                    placeholder: (context, url) => const Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                    errorWidget: (context, url, error) => const Icon(
+                                      Icons.broken_image,
+                                      size: 96,
+                                    ),
                                   ),
                                 ),
                               ),
