@@ -15,7 +15,14 @@ class _HomePageState extends State<HomePage> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            title: const Text("Pokedex"),
+            title: const Text("Pokedex",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                fontSize: 27
+
+              ),
+            ),
             backgroundColor: Colors.red,
             floating: true,
             pinned: true,
