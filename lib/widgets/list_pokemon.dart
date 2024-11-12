@@ -9,14 +9,27 @@ class ListPokemon extends StatelessWidget {
     return '#${number.toString().padLeft(3, '0')}';
   }
 
-  Color _getTypeColor(String type) {
+  List<Color> _getTypeColors(String type) {
     final typeColors = {
-      'fire': Colors.red,
-      'water': Colors.blue,
-      'grass': Colors.green,
-      'electric': Colors.yellow,
+      'fire': [Colors.red, Colors.orange],
+      'water': [Colors.blue, Colors.lightBlue],
+      'grass': [Colors.green, Colors.lightGreen],
+      'electric': [Colors.yellow, Colors.amber],
+      'normal': [Colors.grey, Colors.blueGrey],
+      'bug': [Colors.green, Colors.lime],
+      'poison': [Colors.purple, Colors.deepPurple],
+      'ground': [Colors.brown, Colors.orange],
+      'flying': [Colors.blue, Colors.indigo],
+      'fighting': [Colors.red, Colors.brown],
+      'psychic': [Colors.pink, Colors.purple],
+      'rock': [Colors.brown, Colors.grey],
+      'ghost': [Colors.purple, Colors.indigo],
+      'dragon': [Colors.indigo, Colors.deepPurple],
+      'dark': [Colors.brown, Colors.grey],
+      'steel': [Colors.grey, Colors.blueGrey],
+      'fairy': [Colors.pink, Colors.deepPurple],
     };
-    return typeColors[type.toLowerCase()] ?? Colors.grey;
+    return typeColors[type.toLowerCase()] ?? [Colors.grey, Colors.blueGrey];
   }
 
   @override
@@ -49,11 +62,11 @@ class ListPokemon extends StatelessWidget {
 
         return SliverGrid(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 5.0
+              crossAxisCount: 2,
+              mainAxisSpacing: 5.0
           ),
           delegate: SliverChildBuilderDelegate(
-              (context, index) {
+                  (context, index) {
                 final pokemon = pokemons[index];
                 final number = pokemon['id'];
                 final name = pokemon['name'];
@@ -61,57 +74,72 @@ class ListPokemon extends StatelessWidget {
                     .map((type) => type['pokemon_v2_type']['name'])
                     .toList();
 
-                return Card(
-                  elevation: 4,
-                  child: InkWell(
-                    onTap: () {
-                      // Navegación al detalle del Pokémon
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            _formatPokemonNumber(number),
-                            style: Theme.of(context).textTheme.bodySmall,
+                return Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(16.0),
+                      enableFeedback: true,
+                      onTap: () {
+                        // Navegación al detalle del Pokémon
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16.0),
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: types.map((type) => _getTypeColors(type)).expand((colors) => colors).toList(),
                           ),
-                          const SizedBox(height: 8),
-                          Expanded(
-                            child: Center(
-                              child: Image.network(
-                                'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$number.png',
-                                fit: BoxFit.contain,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return const Icon(Icons.broken_image, size: 96);
-                                },
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                _formatPokemonNumber(number),
+                                style: Theme.of(context).textTheme.bodySmall,
                               ),
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            name.toString().toUpperCase(),
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Wrap(
-                            spacing: 4,
-                            children: types.map((type) => Chip(
-                              label: Text(
-                                type.toString(),
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
+                              const SizedBox(height: 8),
+                              Expanded(
+                                child: Center(
+                                  child: Image.network(
+                                    'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$number.png',
+                                    fit: BoxFit.contain,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return const Icon(Icons.broken_image, size: 96);
+                                    },
+                                  ),
                                 ),
                               ),
-                              backgroundColor: _getTypeColor(type.toString()),
-                              padding: EdgeInsets.zero,
-                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            )).toList(),
+                              const SizedBox(height: 8),
+                              Text(
+                                name.toString().toUpperCase(),
+                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Wrap(
+                                spacing: 4,
+                                children: types.map((type) => Chip(
+                                  label: Text(
+                                    type.toString(),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  backgroundColor: _getTypeColors(type.toString())[0],
+                                  padding: EdgeInsets.zero,
+                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                )).toList(),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
