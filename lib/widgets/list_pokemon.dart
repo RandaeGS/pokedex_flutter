@@ -115,28 +115,34 @@ class ListPokemon extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 8),
-                              Text(
-                                name.toString().toUpperCase(),
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Wrap(
-                                spacing: 4,
-                                children: types.map((type) => Chip(
-                                  label: Text(
-                                    type.toString(),
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
+                              Center(
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      name.toString().toUpperCase(),
+                                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                  backgroundColor: _getTypeColors(type.toString())[0],
-                                  padding: EdgeInsets.zero,
-                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                )).toList(),
-                              ),
+                                    const SizedBox(height: 4),
+                                    Wrap(
+                                      spacing: 4,
+                                      children: types.map((type) => Chip(
+                                        label: Text(
+                                          type.toString(),
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                        backgroundColor: _getTypeColors(type.toString())[0],
+                                        padding: EdgeInsets.zero,
+                                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                      )).toList(),
+                                    ),
+                                  ],
+                                ),
+                              )
                             ],
                           ),
                         ),
