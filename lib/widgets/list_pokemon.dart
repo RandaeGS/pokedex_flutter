@@ -73,6 +73,7 @@ class ListPokemon extends StatelessWidget {
                 final types = (pokemon['pokemon_v2_pokemontypes'] as List)
                     .map((type) => type['pokemon_v2_type']['name'])
                     .toList();
+                final spriteUrl = pokemon['pokemon_v2_pokemonsprites'][0]['sprites'];
 
                 return Padding(
                   padding: const EdgeInsets.all(4.0),
@@ -108,7 +109,7 @@ class ListPokemon extends StatelessWidget {
                               Expanded(
                                 child: Center(
                                   child: Image.network(
-                                    'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$number.png',
+                                    spriteUrl,
                                     fit: BoxFit.contain,
                                     errorBuilder: (context, error, stackTrace) {
                                       return const Icon(Icons.broken_image, size: 96);
@@ -132,7 +133,7 @@ class ListPokemon extends StatelessWidget {
                                       spacing: 4,
                                       children: types.map((type) => Chip(
                                         label: Text(
-                                          type.toString(),
+                                          type.toString().toUpperCase(),
                                           style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 12,
