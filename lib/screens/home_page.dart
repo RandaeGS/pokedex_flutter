@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../widgets/list_pokemon.dart';
 
 class HomePage extends StatefulWidget {
@@ -42,20 +43,27 @@ class _HomePageState extends State<HomePage> {
 
             bottom: AppBar(
               backgroundColor: Colors.red,
-              title: Container(
-                width: double.infinity,
-                height: 40,
-                color: Colors.white,
-                child: const Center(
+              title: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.white
+                  ),
                   child: TextField(
                     decoration: InputDecoration(
-                      hintText: "Search pokemon",
-                      suffixIcon: Icon(Icons.search)
+                      hintText: "Search",
+                      hintStyle: TextStyle(color: Colors.grey),
+                      suffixIcon: Icon(Icons.search),
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10)
                     ),
                   ),
                 ),
               ),
             ),
+
           ),
 
           const ListPokemon(),
