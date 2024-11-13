@@ -18,6 +18,7 @@ class _FilterSectionState extends State<FilterSection> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         InkWell(
+          child: Text("hola"),
           onTap: () {
             setState(() {
               isExpanded = !isExpanded;
