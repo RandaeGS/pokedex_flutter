@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:pokedex_flutter/widgets/popup_options_for_list.dart';
 import '../widgets/list_pokemon.dart';
 
 class HomePage extends StatefulWidget {
@@ -36,7 +36,12 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.white,
                 tooltip: "Filter",
                 onPressed: () {
-
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return const PopupOptionsForList();
+                    },
+                  );
                 },
               )
             ],
