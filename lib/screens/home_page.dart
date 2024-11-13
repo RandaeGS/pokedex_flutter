@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex_flutter/widgets/popup_options_for_list.dart';
+import 'package:pokedex_flutter/widgets/popup_options/popup_options_for_list.dart';
 import '../widgets/list_pokemon.dart';
 
 class HomePage extends StatefulWidget {
