@@ -23,7 +23,60 @@ class _PopupOptionsForListState extends State<PopupOptionsForList> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              FilterSection()
+              FilterSection(
+                title: "Generations",
+                options: [
+                  "Generation I",    // 1996 (Red, Blue, Yellow)
+                  "Generation II",   // 1999 (Gold, Silver, Crystal)
+                  "Generation III",  // 2002 (Ruby, Sapphire, Emerald)
+                  "Generation IV",   // 2006 (Diamond, Pearl, Platinum)
+                  "Generation V",    // 2010 (Black, White, Black 2, White 2)
+                  "Generation VI",   // 2013 (X, Y, Omega Ruby, Alpha Sapphire)
+                  "Generation VII",  // 2016 (Sun, Moon, Ultra Sun, Ultra Moon)
+                  "Generation VIII", // 2019 (Sword, Shield, Brilliant Diamond, Shining Pearl)
+                  "Generation IX",   // 2022 (Scarlet, Violet)
+                ],
+              ),
+              FilterSection(
+                title: "Types",
+                options: [
+                  "Normal",
+                  "Fire",
+                  "Water",
+                  "Electric",
+                  "Grass",
+                  "Ice",
+                  "Fighting",
+                  "Poison",
+                  "Ground",
+                  "Flying",
+                  "Psychic",
+                  "Bug",
+                  "Rock",
+                  "Ghost",
+                  "Dragon",
+                  "Dark",
+                  "Steel",
+                  "Fairy"
+                ],
+              ),
+              FilterSection(
+                title: "Abilities",
+                options: [
+                  "Overgrow",
+                  "Chlorophyll",
+                  "Blaze",
+                  "Solar Power",
+                  "Torrent",
+                  "Rain Dish",
+                  "Shield Dust",
+                  "Run Away",
+                  "Keen Eye",
+                  "Intimidate",
+                  "Static",
+                  "Lightning Rod",
+                ],
+              )
             ],
           ),
         ),
