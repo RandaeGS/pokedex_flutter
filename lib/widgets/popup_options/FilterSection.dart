@@ -42,48 +42,54 @@ class _FilterSectionState extends State<FilterSection> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Icon(
-                  isExpanded ? Icons.arrow_drop_up_sharp : Icons.arrow_drop_down_sharp
-                )
+                AnimatedRotation(
+                  duration: const Duration(milliseconds: 200),
+                  turns: isExpanded ? 0.5 : 0,
+                  child: const Icon(Icons.arrow_drop_down_sharp),
+                ),
               ],
             ),
           ),
         ),
-        if(isExpanded)(
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Wrap(
-                spacing: 8.0, // espacio horizontal entre chips
-                runSpacing: 8.0, // espacio vertical entre filas
-                children: widget.options.map((option) {
-                  final isSelected = selectedOptions.contains(option);
-                  return FilterChip(
-                    label: Text(
-                      option,
-                      style: TextStyle(
-                        color: isSelected ? Colors.white : Colors.black,
-                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+        AnimatedSize(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeInOut,
+          child: ClipRect(
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              height: isExpanded ? null : 0,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Wrap(
+                  spacing: 8.0,
+                  runSpacing: 8.0,
+                  children: widget.options.map( (option) {
+                    final isSelected = selectedOptions.contains(option);
+                    return FilterChip(
+                      label: Text(
+                        option,
+                        style: TextStyle(
+                          color: isSelected ? Colors.white : Colors.black,
+                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal
+                        ),
                       ),
-                    ),
-                    selected: isSelected,
-                    showCheckmark: false,
-                    onSelected: (bool selected) {
-                      setState(() {
-                        if (selected) {
-                          selectedOptions.add(option);
-                        } else {
-                          selectedOptions.remove(option);
-                        }
-                      });
-                    },
-                    selectedColor: Colors.blue, // Color cuando está seleccionado
-                    backgroundColor: Colors.grey[200], // Color cuando no está seleccionado
-                    checkmarkColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  );
-                }).toList(),
+                      selected: isSelected,
+                      showCheckmark: false,
+                      onSelected: (bool selected) {
+                        setState(() {
+                          selected ? selectedOptions.add(option) : selectedOptions.remove(option);
+                        });
+                      },
+                      selectedColor: Colors.blue,
+                      backgroundColor: Colors.grey,
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    );
+                  }).toList(),
+                ),
               ),
-            )),
+            ),
+          ),
+        )
       ],
     );
   }
