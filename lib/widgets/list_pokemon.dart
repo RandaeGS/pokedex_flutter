@@ -4,7 +4,9 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import '../graphql/queries/pokemon_list_query.dart';
 
 class ListPokemon extends StatelessWidget {
-  const ListPokemon({super.key});
+  final Map<String, Set<String>> activeFilters;
+
+  const ListPokemon({super.key, required this.activeFilters});
 
   String _formatPokemonNumber(int number) {
     return '#${number.toString().padLeft(3, '0')}';
@@ -35,10 +37,15 @@ class ListPokemon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final typesList = _getTypesList(activeFilters['types']);
+
     return Query(
       options: QueryOptions(
         document: gql(queryPokemonList),
         fetchPolicy: FetchPolicy.cacheFirst,
+        variables: {
+          'types': _getTypesList(activeFilters['types']),
+        }
       ),
       builder: (result, {fetchMore, refetch}) {
         if (result.isLoading) {
@@ -166,4 +173,13 @@ class ListPokemon extends StatelessWidget {
       },
     );
   }
+}
+
+List<String>? _getTypesList(Set<String>? types) {
+  if (types == null || types.isEmpty) return [
+    'normal', 'fire', 'water', 'electric', 'grass', 'ice',
+    'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug',
+    'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'
+  ];
+  return types.map((type) => type.toLowerCase()).toList();
 }
