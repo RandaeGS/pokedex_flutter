@@ -187,11 +187,23 @@ List<String>? _getTypesList(Set<String>? types) {
   return types.map((type) => type.toLowerCase()).toList();
 }
 
-List<String>? _getGenerationList(Set<String>? generations) {
+List<int>? _getGenerationList(Set<String>? generations) {
   if (generations == null || generations.isEmpty){
-    return [
-      '1', '2', '3', '4', '5', '6', '7', '8', '9'
-    ];
+    return [1, 2, 3, 4, 5, 6, 7, 8, 9];
   }
-  return generations.map((generation) => generation.toLowerCase()).toList();
+  return generations.map((generation) {
+    final romanNumeral = generation.split(' ').last;
+    switch (romanNumeral) {
+      case 'I': return 1;
+      case 'II': return 2;
+      case 'III': return 3;
+      case 'IV': return 4;
+      case 'V': return 5;
+      case 'VI': return 6;
+      case 'VII': return 7;
+      case 'VIII': return 8;
+      case 'IX': return 9;
+      default: return 1;
+    }
+  }).toList();
 }
