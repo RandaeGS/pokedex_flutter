@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex_flutter/widgets/popup_options/FilterSection.dart';
+import 'package:pokedex_flutter/widgets/popup_options/filter_section.dart';
 
 class PopupOptionsForList extends StatefulWidget {
   const PopupOptionsForList({super.key});
