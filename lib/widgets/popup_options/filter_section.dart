@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class FilterSection extends StatefulWidget {
   final String title;
   final List<String> options;
+  final Function(Set<String>) onFilterChange;
 
   const FilterSection({
     super.key,
     required this.title,
     required this.options,
+    required this.onFilterChange,
   });
 
   @override
@@ -78,6 +80,7 @@ class _FilterSectionState extends State<FilterSection> {
                       onSelected: (bool selected) {
                         setState(() {
                           selected ? selectedOptions.add(option) : selectedOptions.remove(option);
+                          widget.onFilterChange(selectedOptions);
                         });
                       },
                       selectedColor: Colors.blue,

@@ -2,13 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:pokedex_flutter/widgets/popup_options/filter_section.dart';
 
 class PopupOptionsForList extends StatefulWidget {
-  const PopupOptionsForList({super.key});
+  final Function(Map<String, Set<String>>) onFiltersChanged;
+
+  const PopupOptionsForList({super.key, required this.onFiltersChanged});
 
   @override
   State<PopupOptionsForList> createState() => _PopupOptionsForListState();
 }
 
 class _PopupOptionsForListState extends State<PopupOptionsForList> {
+  final Map<String, Set<String>> selectedFilters = {
+    'generations': {},
+    'types': {},
+  };
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -36,6 +43,10 @@ class _PopupOptionsForListState extends State<PopupOptionsForList> {
                   "Generation VIII", // 2019 (Sword, Shield, Brilliant Diamond, Shining Pearl)
                   "Generation IX",   // 2022 (Scarlet, Violet)
                 ],
+                onFilterChange: (filters) {
+                  selectedFilters['generations'] = filters;
+                  widget.onFiltersChanged(selectedFilters);
+                },
               ),
               FilterSection(
                 title: "Types",
@@ -59,6 +70,10 @@ class _PopupOptionsForListState extends State<PopupOptionsForList> {
                   "Steel",
                   "Fairy"
                 ],
+                onFilterChange: (filters) {
+                  selectedFilters['types'] = filters;
+                  widget.onFiltersChanged(selectedFilters);
+                },
               ),
               FilterSection(
                 title: "Abilities",
@@ -76,6 +91,10 @@ class _PopupOptionsForListState extends State<PopupOptionsForList> {
                   "Static",
                   "Lightning Rod",
                 ],
+                onFilterChange: (filters) {
+                  selectedFilters['cambiar esto'] = filters;
+                  widget.onFiltersChanged(selectedFilters);
+                },
               )
             ],
           ),

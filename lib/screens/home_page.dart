@@ -44,7 +44,13 @@ class _HomePageState extends State<HomePage> {
                   showDialog(
                     context: context,
                     builder: (context) {
-                      return const PopupOptionsForList();
+                      return PopupOptionsForList(
+                        onFiltersChanged: (filters) {
+                          setState(() {
+                            activeFilters = filters;
+                          });
+                        },
+                      );
                     },
                   );
                 },
@@ -76,7 +82,7 @@ class _HomePageState extends State<HomePage> {
 
           ),
 
-          const ListPokemon(),
+          ListPokemon(activeFilters: activeFilters,),
         ],
       ),
 
