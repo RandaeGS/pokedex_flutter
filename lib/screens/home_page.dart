@@ -10,6 +10,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Map<String, Set<String>> activeFilters = {
+    'generations': {},
+    'types': {},
+  };
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
