@@ -176,10 +176,12 @@ class ListPokemon extends StatelessWidget {
 }
 
 List<String>? _getTypesList(Set<String>? types) {
-  if (types == null || types.isEmpty) return [
+  if (types == null || types.isEmpty) {
+    return [
     'normal', 'fire', 'water', 'electric', 'grass', 'ice',
     'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug',
     'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'
   ];
+  }
   return types.map((type) => type.toLowerCase()).toList();
 }
