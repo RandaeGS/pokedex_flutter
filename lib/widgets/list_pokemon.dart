@@ -45,6 +45,7 @@ class ListPokemon extends StatelessWidget {
         fetchPolicy: FetchPolicy.cacheFirst,
         variables: {
           'types': _getTypesList(activeFilters['types']),
+          'generations': _getGenerationList(activeFilters['generations']),
         }
       ),
       builder: (result, {fetchMore, refetch}) {
@@ -184,4 +185,13 @@ List<String>? _getTypesList(Set<String>? types) {
   ];
   }
   return types.map((type) => type.toLowerCase()).toList();
+}
+
+List<String>? _getGenerationList(Set<String>? generations) {
+  if (generations == null || generations.isEmpty){
+    return [
+      '1', '2', '3', '4', '5', '6', '7', '8', '9'
+    ];
+  }
+  return generations.map((generation) => generation.toLowerCase()).toList();
 }
