@@ -86,7 +86,13 @@ class _HomePageState extends State<HomePage> {
           ListPokemon(activeFilters: activeFilters,),
         ],
       ),
-
+      floatingActionButton: FloatingActionButton(
+        onPressed: ,
+        tooltip: "Options",
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+      ),
     );
   }
 }
