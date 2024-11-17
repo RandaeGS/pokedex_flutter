@@ -2,19 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:pokedex_flutter/widgets/popup_options/filter_section.dart';
 
 class PopupOptionsForList extends StatefulWidget {
+  final Map<String, Set<String>> currentFilters;
   final Function(Map<String, Set<String>>) onFiltersChanged;
 
-  const PopupOptionsForList({super.key, required this.onFiltersChanged});
+  const PopupOptionsForList({super.key, required this.onFiltersChanged, required this.currentFilters});
 
   @override
   State<PopupOptionsForList> createState() => _PopupOptionsForListState();
 }
 
 class _PopupOptionsForListState extends State<PopupOptionsForList> {
-  final Map<String, Set<String>> selectedFilters = {
-    'generations': {},
-    'types': {},
-  };
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +40,10 @@ class _PopupOptionsForListState extends State<PopupOptionsForList> {
                   "Generation VIII", // 2019 (Sword, Shield, Brilliant Diamond, Shining Pearl)
                   "Generation IX",   // 2022 (Scarlet, Violet)
                 ],
+                initialSelected: widget.currentFilters,
                 onFilterChange: (filters) {
-                  selectedFilters['generations'] = filters;
-                  widget.onFiltersChanged(selectedFilters);
+                  widget.currentFilters['generations'] = filters;
+                  widget.onFiltersChanged(widget.currentFilters);
                 },
               ),
               FilterSection(
@@ -70,32 +68,35 @@ class _PopupOptionsForListState extends State<PopupOptionsForList> {
                   "Steel",
                   "Fairy"
                 ],
+                initialSelected: widget.currentFilters,
                 onFilterChange: (filters) {
-                  selectedFilters['types'] = filters;
-                  widget.onFiltersChanged(selectedFilters);
+                  setState(() {
+                    widget.currentFilters['types'] = filters;
+                    widget.onFiltersChanged(widget.currentFilters);
+                  });
                 },
               ),
-              FilterSection(
-                title: "Abilities",
-                options: [
-                  "Overgrow",
-                  "Chlorophyll",
-                  "Blaze",
-                  "Solar Power",
-                  "Torrent",
-                  "Rain Dish",
-                  "Shield Dust",
-                  "Run Away",
-                  "Keen Eye",
-                  "Intimidate",
-                  "Static",
-                  "Lightning Rod",
-                ],
-                onFilterChange: (filters) {
-                  selectedFilters['cambiar esto'] = filters;
-                  widget.onFiltersChanged(selectedFilters);
-                },
-              )
+              // FilterSection(
+              //   title: "Abilities",
+              //   options: [
+              //     "Overgrow",
+              //     "Chlorophyll",
+              //     "Blaze",
+              //     "Solar Power",
+              //     "Torrent",
+              //     "Rain Dish",
+              //     "Shield Dust",
+              //     "Run Away",
+              //     "Keen Eye",
+              //     "Intimidate",
+              //     "Static",
+              //     "Lightning Rod",
+              //   ],
+              //   onFilterChange: (filters) {
+              //     selectedFilters['types'] = filters;
+              //     widget.onFiltersChanged(selectedFilters);
+              //   },
+              // )
             ],
           ),
         ),

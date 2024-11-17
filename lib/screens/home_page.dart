@@ -45,6 +45,7 @@ class _HomePageState extends State<HomePage> {
                     context: context,
                     builder: (context) {
                       return PopupOptionsForList(
+                        currentFilters: activeFilters,
                         onFiltersChanged: (filters) {
                           setState(() {
                             activeFilters = filters;

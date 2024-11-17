@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 class FilterSection extends StatefulWidget {
   final String title;
   final List<String> options;
+  final Map<String, Set<String>> initialSelected;
   final Function(Set<String>) onFilterChange;
 
   const FilterSection({
     super.key,
     required this.title,
     required this.options,
+    required this.initialSelected,
     required this.onFilterChange,
   });
 
@@ -18,8 +20,7 @@ class FilterSection extends StatefulWidget {
 
 class _FilterSectionState extends State<FilterSection> {
   bool isExpanded = false;
-  Set<String> selectedOptions = {};
-  
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -66,8 +67,7 @@ class _FilterSectionState extends State<FilterSection> {
                   spacing: 8.0,
                   runSpacing: 8.0,
                   children: widget.options.map( (option) {
-                    final isSelected = selectedOptions.contains(option);
-                    return FilterChip(
+                    final isSelected = widget.initialSelected[widget.title.toLowerCase()]?.contains(option) ?? false;                    return FilterChip(
                       label: Text(
                         option,
                         style: TextStyle(
@@ -79,8 +79,14 @@ class _FilterSectionState extends State<FilterSection> {
                       showCheckmark: false,
                       onSelected: (bool selected) {
                         setState(() {
-                          selected ? selectedOptions.add(option) : selectedOptions.remove(option);
-                          widget.onFilterChange(selectedOptions);
+                          if (selected) {
+                            widget.initialSelected[widget.title.toLowerCase()]
+                                ?.add(option);
+                          } else {
+                            widget.initialSelected[widget.title.toLowerCase()]
+                                ?.remove(option);
+                          }
+                          widget.onFilterChange(widget.initialSelected[widget.title.toLowerCase()]!);
                         });
                       },
                       selectedColor: Colors.blue,
