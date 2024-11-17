@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex_flutter/widgets/popup_options/expandable_fab.dart';
 import 'package:pokedex_flutter/widgets/popup_options/popup_options_for_list.dart';
 import '../widgets/list_pokemon.dart';
+import '../widgets/popup_options/action_button_expandable.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -86,13 +88,34 @@ class _HomePageState extends State<HomePage> {
           ListPokemon(activeFilters: activeFilters,),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: ,
-        tooltip: "Options",
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
+      floatingActionButton: ExpandableFab(
+          distance: 60,
+          children: [
+            ActionButton(
+              onPressed: () => {},
+              icon: const Icon(Icons.format_size),
+            ),
+            ActionButton(
+              onPressed: () => {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return PopupOptionsForList(
+                      currentFilters: activeFilters,
+                      onFiltersChanged: (filters) {
+                        setState(() {
+                          activeFilters = filters;
+                        });
+                      },
+                    );
+                  },
+                )
+            },
+              icon: const Icon(Icons.insert_photo),
+            ),
+          ]
       ),
+
     );
   }
 }
