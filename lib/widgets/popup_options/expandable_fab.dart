@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex_flutter/widgets/popup_options/expanding_action_button.dart';
 
 @immutable
 class ExpandableFab extends StatefulWidget {
@@ -54,6 +55,7 @@ class _ExpandableFabState extends State<ExpandableFab> with SingleTickerProvider
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox.expand(
@@ -62,6 +64,7 @@ class _ExpandableFabState extends State<ExpandableFab> with SingleTickerProvider
         clipBehavior: Clip.none,
         children: [
           _buildTapToCloseFab(),
+          ..._buildExpandingActionButtons(),
           _buildTapToOpenFab(),
         ],
       ),
@@ -109,11 +112,31 @@ class _ExpandableFabState extends State<ExpandableFab> with SingleTickerProvider
           curve: const Interval(0.25, 1.0, curve: Curves.easeInOut),
           duration: const Duration(milliseconds: 250),
           child: FloatingActionButton(
+            shape: const CircleBorder(),
             onPressed: _toggle,
             child: const Icon(Icons.create),
           ),
         ),
       ),
     );
+  }
+
+  List<Widget> _buildExpandingActionButtons() {
+    final children = <Widget>[];
+    final count = widget.children.length;
+    final step = 90.0 / (count - 1);
+    for (var i = 0, angleInDegrees = 0.0;
+    i < count;
+    i++, angleInDegrees += step) {
+      children.add(
+        ExpandingActionButton(
+          directionInDegrees: angleInDegrees,
+          maxDistance: widget.distance * (i + 1),
+          progress: _expandAnimation,
+          child: widget.children[i],
+        ),
+      );
+    }
+    return children;
   }
 }
