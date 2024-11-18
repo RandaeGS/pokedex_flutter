@@ -37,29 +37,6 @@ class _HomePageState extends State<HomePage> {
             snap: true,
             centerTitle: false,
 
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.filter_list),
-                color: Colors.white,
-                tooltip: "Filter",
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return PopupOptionsForList(
-                        currentFilters: activeFilters,
-                        onFiltersChanged: (filters) {
-                          setState(() {
-                            activeFilters = filters;
-                          });
-                        },
-                      );
-                    },
-                  );
-                },
-              )
-            ],
-
             bottom: AppBar(
               backgroundColor: Colors.red,
               title: Padding(
