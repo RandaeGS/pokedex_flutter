@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                   },
                 )
               },
-              icon: const Icon(Icons.format_size),
+              icon: const Icon(Icons.sort),
             ),
             ActionButton(
               onPressed: () => {
@@ -110,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                   },
                 )
             },
-              icon: const Icon(Icons.insert_photo),
+              icon: const Icon(Icons.filter_list),
             ),
           ]
       ),

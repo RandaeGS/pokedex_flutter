@@ -114,7 +114,7 @@ class _ExpandableFabState extends State<ExpandableFab> with SingleTickerProvider
           child: FloatingActionButton(
             shape: const CircleBorder(),
             onPressed: _toggle,
-            child: const Icon(Icons.create),
+            child: const Icon(Icons.catching_pokemon_rounded),
           ),
         ),
       ),
