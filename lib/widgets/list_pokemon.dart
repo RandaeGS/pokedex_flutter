@@ -1,12 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:pokedex_flutter/widgets/popup_options/sorting_section.dart';
 import '../graphql/queries/pokemon_list_query.dart';
 
 class ListPokemon extends StatelessWidget {
   final Map<String, Set<String>> activeFilters;
+  final SortOption currentSort;
 
-  const ListPokemon({super.key, required this.activeFilters});
+  const ListPokemon({super.key, required this.activeFilters, required this.currentSort});
 
   String _formatPokemonNumber(int number) {
     return '#${number.toString().padLeft(3, '0')}';
@@ -46,7 +48,9 @@ class ListPokemon extends StatelessWidget {
         variables: {
           'types': _getTypesList(activeFilters['types']),
           'generations': _getGenerationList(activeFilters['generations']),
-        }
+          'orderBy': currentSort.field == SortField.id
+              ? [{"id": currentSort.order == SortOrder.asc ? "asc" : "desc"}]
+              : [{"name": currentSort.order == SortOrder.asc ? "asc" : "desc"}],        }
       ),
       builder: (result, {fetchMore, refetch}) {
         if (result.isLoading) {
