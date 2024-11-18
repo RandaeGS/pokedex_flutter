@@ -16,6 +16,14 @@ class SortingDialog extends StatefulWidget {
 }
 
 class _SortingDialogState extends State<SortingDialog> {
+  late SortOption selectedSort;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedSort = widget.currentSort;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -66,8 +74,13 @@ class _SortingDialogState extends State<SortingDialog> {
                   ),
                 ),
                 SortingSection(
-                  selectedOption: widget.currentSort,
-                  onSortChange: widget.onSortChanged,
+                  selectedOption: selectedSort,
+                  onSortChange: (newSort) {
+                    setState(() {
+                      selectedSort = newSort;
+                      widget.onSortChanged(newSort);
+                    });
+                  }
                 ),
               ],
             ),

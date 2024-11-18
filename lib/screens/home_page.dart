@@ -81,7 +81,8 @@ class _HomePageState extends State<HomePage> {
                 showDialog(
                   context: context,
                   builder: (context) {
-                    return SortingDialog(currentSort: currentSort,
+                    return SortingDialog(
+                      currentSort: currentSort,
                       onSortChanged: (sort) {
                         setState(() {
                           currentSort = sort;
