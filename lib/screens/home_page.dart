@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex_flutter/widgets/popup_options/expandable_fab.dart';
 import 'package:pokedex_flutter/widgets/popup_options/popup_options_for_list.dart';
+import 'package:pokedex_flutter/widgets/popup_options/sorting_dialog.dart';
 import '../widgets/list_pokemon.dart';
 import '../widgets/popup_options/action_button_expandable.dart';
+import '../widgets/popup_options/sorting_section.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,6 +18,12 @@ class _HomePageState extends State<HomePage> {
     'generations': {},
     'types': {},
   };
+
+  SortOption currentSort = const SortOption(
+    field: SortField.id,
+    order: SortOrder.asc,
+    label: 'Lowest Number (First)',
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +77,20 @@ class _HomePageState extends State<HomePage> {
           distance: 60,
           children: [
             ActionButton(
-              onPressed: () => {},
+              onPressed: () => {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return SortingDialog(currentSort: currentSort,
+                      onSortChanged: (sort) {
+                        setState(() {
+                          currentSort = sort;
+                        });
+                      },
+                    );
+                  },
+                )
+              },
               icon: const Icon(Icons.format_size),
             ),
             ActionButton(
