@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex_flutter/widgets/popup_options/sorting_section.dart';
 
 class SortingDialog extends StatefulWidget {
-  const SortingDialog({super.key});
+  final SortOption currentSort;
+  final Function(SortOption) onSortChanged;
+
+  const SortingDialog({
+    super.key,
+    required this.currentSort,
+    required this.onSortChanged
+  });
 
   @override
   State<SortingDialog> createState() => _SortingDialogState();
@@ -38,7 +46,29 @@ class _SortingDialogState extends State<SortingDialog> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.red.shade200,
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                  child: const Text(
+                    'Sort Pokémon',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                    ),
+                  ),
+                ),
+                SortingSection(
+                  selectedOption: widget.currentSort,
+                  onSortChange: widget.onSortChanged,
+                ),
               ],
             ),
           ),
