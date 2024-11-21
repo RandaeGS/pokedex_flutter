@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
 
           ),
 
-          ListPokemon(activeFilters: activeFilters, currentSort: currentSort,),
+          ListPokemon(activeFilters: activeFilters, currentSort: currentSort, searchName: _searchName,),
         ],
       ),
       floatingActionButton: ExpandableFab(

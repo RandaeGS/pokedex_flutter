@@ -7,8 +7,14 @@ import '../graphql/queries/pokemon_list_query.dart';
 class ListPokemon extends StatelessWidget {
   final Map<String, Set<String>> activeFilters;
   final SortOption currentSort;
+  final String searchName;
 
-  const ListPokemon({super.key, required this.activeFilters, required this.currentSort});
+  const ListPokemon({
+    super.key,
+    required this.activeFilters,
+    required this.currentSort,
+    required this.searchName
+  });
 
   String _formatPokemonNumber(int number) {
     return '#${number.toString().padLeft(3, '0')}';
