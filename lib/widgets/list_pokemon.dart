@@ -56,7 +56,10 @@ class ListPokemon extends StatelessWidget {
           'generations': _getGenerationList(activeFilters['generations']),
           'orderBy': currentSort.field == SortField.id
               ? [{"id": currentSort.order == SortOrder.asc ? "asc" : "desc"}]
-              : [{"name": currentSort.order == SortOrder.asc ? "asc" : "desc"}],        }
+              : [{"name": currentSort.order == SortOrder.asc ? "asc" : "desc"}],
+          'searchName': searchName.isEmpty ? '%%' : '%${searchName
+              .toLowerCase()}%',
+        }
       ),
       builder: (result, {fetchMore, refetch}) {
         if (result.isLoading) {
