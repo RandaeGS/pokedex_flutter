@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pokedex_flutter/widgets/popup_options/expandable_fab.dart';
 import 'package:pokedex_flutter/widgets/popup_options/popup_options_for_list.dart';
 import 'package:pokedex_flutter/widgets/popup_options/sorting_dialog.dart';
+import 'package:string_validator/string_validator.dart';
 import '../widgets/list_pokemon.dart';
 import '../widgets/popup_options/action_button_expandable.dart';
 import '../widgets/popup_options/sorting_section.dart';
@@ -15,6 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String _searchName = '';
+  int _searchNumber = 0;
 
   Map<String, Set<String>> activeFilters = {
     'generations': {},
@@ -67,7 +69,14 @@ class _HomePageState extends State<HomePage> {
                     ),
                     onChanged: (String value) {
                       setState(() {
-                        _searchName = value.trim();
+                        value = value.trim();
+                        if (isNumeric(value)){
+                          _searchNumber = int.parse(value);
+                          _searchName = '';
+                        } else {
+                          _searchName = value;
+                          _searchNumber = 0;
+                        }
                       });
                     },
                   ),
@@ -77,7 +86,7 @@ class _HomePageState extends State<HomePage> {
 
           ),
 
-          ListPokemon(activeFilters: activeFilters, currentSort: currentSort, searchName: _searchName,),
+          ListPokemon(activeFilters: activeFilters, currentSort: currentSort, searchName: _searchName, searchNumber: _searchNumber,),
         ],
       ),
       floatingActionButton: ExpandableFab(
