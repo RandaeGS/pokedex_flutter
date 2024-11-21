@@ -2,7 +2,8 @@ const String queryPokemonList = """
 query listPokemons(
  \$types: [String!], 
  \$generations: [Int!],
- \$orderBy: [pokemon_v2_pokemon_order_by!]
+ \$orderBy: [pokemon_v2_pokemon_order_by!],
+ \$searchName: String
 ) {
  pokemon_v2_pokemon(
    limit: 80,
@@ -24,6 +25,11 @@ query listPokemons(
              _in: \$generations
            }
          }
+       },
+       {
+          name: {
+            _ilike: \$searchName
+          }
        }
      ]
    }
