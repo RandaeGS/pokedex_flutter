@@ -14,6 +14,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String _searchName = '';
+
   Map<String, Set<String>> activeFilters = {
     'generations': {},
     'types': {},
@@ -61,8 +63,13 @@ class _HomePageState extends State<HomePage> {
                       hintStyle: TextStyle(color: Colors.grey),
                       suffixIcon: Icon(Icons.search),
                       border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10)
+                      contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                     ),
+                    onChanged: (String value) {
+                      setState(() {
+                        _searchName = value.trim();
+                      });
+                    },
                   ),
                 ),
               ),
