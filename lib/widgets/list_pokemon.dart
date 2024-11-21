@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:pokedex_flutter/graphql/queries/search_pokemon_by_number.dart';
 import 'package:pokedex_flutter/widgets/popup_options/sorting_section.dart';
 import '../graphql/queries/pokemon_list_query.dart';
 
@@ -8,12 +9,14 @@ class ListPokemon extends StatelessWidget {
   final Map<String, Set<String>> activeFilters;
   final SortOption currentSort;
   final String searchName;
+  final int searchNumber;
 
   const ListPokemon({
     super.key,
     required this.activeFilters,
     required this.currentSort,
-    required this.searchName
+    required this.searchName,
+    required this.searchNumber
   });
 
   String _formatPokemonNumber(int number) {
@@ -48,7 +51,7 @@ class ListPokemon extends StatelessWidget {
     final typesList = _getTypesList(activeFilters['types']);
 
     return Query(
-      options: QueryOptions(
+      options: searchNumber == 0 ? QueryOptions(
         document: gql(queryPokemonList),
         fetchPolicy: FetchPolicy.cacheFirst,
         variables: {
@@ -59,6 +62,12 @@ class ListPokemon extends StatelessWidget {
               : [{"name": currentSort.order == SortOrder.asc ? "asc" : "desc"}],
           'searchName': searchName.isEmpty ? '%%' : '%${searchName
               .toLowerCase()}%',
+        }
+      ) : QueryOptions(
+        document: gql(searchPokemonByNumberQuery),
+        fetchPolicy: FetchPolicy.cacheFirst,
+        variables: {
+          'number': searchNumber
         }
       ),
       builder: (result, {fetchMore, refetch}) {
