@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:pokedex_flutter/graphql/queries/search_pokemon_by_number.dart';
 import 'package:pokedex_flutter/widgets/pokemon_grid_item.dart';
 import 'package:pokedex_flutter/widgets/popup_options/sorting_section.dart';
@@ -25,17 +26,26 @@ class ListPokemon extends StatefulWidget {
 }
 
 class _ListPokemonState extends State<ListPokemon> {
-
+  static const _pageSize = 20;
+  final PagingController<int, dynamic> _pagingController = PagingController(firstPageKey: 0);
 
   @override
-  Widget build(BuildContext context) {
-    final typesList = _getTypesList(widget.activeFilters['types']);
+  void initState() {
+    super.initState();
+    _pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
+    });
+  }
 
-    return Query(
-      options: widget.searchNumber == 0 ? QueryOptions(
+  Future<void> _fetchPage(int pageKey) async {
+    try {
+      final client = GraphQLProvider.of(context).value;
+      final options = widget.searchNumber == 0 ? QueryOptions(
           document: gql(queryPokemonList),
           fetchPolicy: FetchPolicy.cacheFirst,
           variables: {
+            'offset': pageKey,
+            'limit': _pageSize,
             'types': _getTypesList(widget.activeFilters['types']),
             'generations': _getGenerationList(widget.activeFilters['generations']),
             'orderBy': widget.currentSort.field == SortField.id
@@ -50,43 +60,46 @@ class _ListPokemonState extends State<ListPokemon> {
           variables: {
             'number': widget.searchNumber
           }
+      );
+
+      final result = await client.query(options);
+      final List pokemons = result.data!['pokemon_v2_pokemon'];
+      final isLastPage = pokemons.length < _pageSize;
+
+      if (isLastPage) {
+        _pagingController.appendLastPage(pokemons);
+      } else {
+        _pagingController.appendPage(pokemons, pageKey + pokemons.length);
+      }
+
+    }catch (error) {
+      _pagingController.error = error;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return PagedSliverGrid<int, dynamic>(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisSpacing: 8.0,
+        crossAxisSpacing: 8.0,
+        childAspectRatio: 0.85
       ),
-      builder: (result, {fetchMore, refetch}) {
-        if (result.isLoading) {
-          return const SliverToBoxAdapter(
-              child: Center(child: CircularProgressIndicator())
-          );
-        }
+      builderDelegate: PagedChildBuilderDelegate(
+        itemBuilder: (context, item, index) {
 
-        if (result.hasException) {
-          return SliverToBoxAdapter(
-            child: Center(child: Text('Error: ${result.exception.toString()}')),
-          );
-        }
-
-        final List pokemons = result.data!['pokemon_v2_pokemon'];
-
-        if (pokemons.isEmpty) {
-          return const SliverToBoxAdapter(
-            child: Center(child: Text('No Pokémon found')),
-          );
-        }
-
-        return SliverGrid(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 5.0
-          ),
-          delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                final pokemon = pokemons[index];
-
-                return PokemonGridItem(pokemon: pokemon);
-              },
-              childCount: pokemons.length
-          ),
-        );
-      },
+          return PokemonGridItem(pokemon: item);
+        },
+        firstPageProgressIndicatorBuilder: (context) => const Center(
+          child: CircularProgressIndicator(),
+        ),
+        noItemsFoundIndicatorBuilder: (context) => const Center(
+          child: Text('No Pokemon Found'),
+        ),
+      ),
+      pagingController: _pagingController,
     );
   }
 }
