@@ -1,6 +1,6 @@
 const String queryFavoritePokemon = """
 query getFavorites(\$ids: [Int!]!) {
-  pokemon_v2_pokemon(where: {id: {_in: \$ids}}) {
+  pokemon_v2_pokemon(where: {id: {_in: \$ids}}, order_by: {id: asc}) {
     id
     name
     pokemon_v2_pokemontypes {

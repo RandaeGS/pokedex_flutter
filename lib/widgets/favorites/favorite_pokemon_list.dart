@@ -34,7 +34,8 @@ class _FavoritePokemonListState extends State<FavoritePokemonList> {
   Future<void> _loadFavorites() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      favoriteIds = prefs.getStringList('favorites')?.map(int.parse).toList() ?? [];
+      favoriteIds = (prefs.getStringList('favorites')?.map(int.parse).toList() ?? [])
+        ..sort((a, b) => a.compareTo(b));
     });
     _pagingController.refresh();
   }
