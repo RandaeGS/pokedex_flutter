@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex_flutter/widgets/favorites/favorite_pokemon_list.dart';
 import 'package:pokedex_flutter/widgets/popup_options/expandable_fab.dart';
 import 'package:pokedex_flutter/widgets/popup_options/popup_options_for_list.dart';
 import 'package:pokedex_flutter/widgets/popup_options/sorting_dialog.dart';
@@ -18,6 +19,7 @@ class _HomePageState extends State<HomePage> {
   String _searchName = '';
   int _searchNumber = 0;
   bool _updateFilter = false;
+  bool _showFavorites = false;
 
   Map<String, Set<String>> activeFilters = {
     'generations': {},
@@ -87,8 +89,9 @@ class _HomePageState extends State<HomePage> {
 
           ),
 
-          ListPokemon(activeFilters: activeFilters, currentSort: currentSort,
-            searchName: _searchName, searchNumber: _searchNumber, updateFilter: _updateFilter,),
+            !_showFavorites ? ListPokemon(activeFilters: activeFilters, currentSort: currentSort,
+              searchName: _searchName, searchNumber: _searchNumber, updateFilter: _updateFilter,)
+            : FavoritePokemonList()
         ],
       ),
       floatingActionButton: ExpandableFab(
@@ -131,6 +134,14 @@ class _HomePageState extends State<HomePage> {
                 )
             },
               icon: const Icon(Icons.filter_list),
+            ),
+            ActionButton(
+              onPressed: () => {
+                setState(() {
+                  _showFavorites = !_showFavorites;
+                })
+              },
+              icon: const Icon(Icons.favorite),
             ),
           ]
       ),
