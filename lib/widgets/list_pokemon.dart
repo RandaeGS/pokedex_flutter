@@ -12,6 +12,7 @@ class ListPokemon extends StatefulWidget {
   final SortOption currentSort;
   final String searchName;
   final int searchNumber;
+  final bool updateFilter;
 
   const ListPokemon({
     super.key,
@@ -19,6 +20,7 @@ class ListPokemon extends StatefulWidget {
     required this.currentSort,
     required this.searchName,
     required this.searchNumber,
+    required this.updateFilter
   });
 
   @override
@@ -35,6 +37,17 @@ class _ListPokemonState extends State<ListPokemon> {
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
+  }
+
+  @override
+  void didUpdateWidget(covariant ListPokemon oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.updateFilter ||
+        oldWidget.currentSort != widget.currentSort ||
+        oldWidget.searchName != widget.searchName ||
+        oldWidget.searchNumber != widget.searchNumber) {
+      _pagingController.refresh();
+    }
   }
 
   Future<void> _fetchPage(int pageKey) async {

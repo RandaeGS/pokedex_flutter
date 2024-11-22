@@ -17,6 +17,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String _searchName = '';
   int _searchNumber = 0;
+  bool _updateFilter = false;
 
   Map<String, Set<String>> activeFilters = {
     'generations': {},
@@ -86,7 +87,8 @@ class _HomePageState extends State<HomePage> {
 
           ),
 
-          ListPokemon(activeFilters: activeFilters, currentSort: currentSort, searchName: _searchName, searchNumber: _searchNumber,),
+          ListPokemon(activeFilters: activeFilters, currentSort: currentSort,
+            searchName: _searchName, searchNumber: _searchNumber, updateFilter: _updateFilter,),
         ],
       ),
       floatingActionButton: ExpandableFab(
@@ -102,6 +104,7 @@ class _HomePageState extends State<HomePage> {
                       onSortChanged: (sort) {
                         setState(() {
                           currentSort = sort;
+                          _updateFilter = true;
                         });
                       },
                     );
@@ -120,6 +123,7 @@ class _HomePageState extends State<HomePage> {
                       onFiltersChanged: (filters) {
                         setState(() {
                           activeFilters = filters;
+                          _updateFilter = true;
                         });
                       },
                     );
