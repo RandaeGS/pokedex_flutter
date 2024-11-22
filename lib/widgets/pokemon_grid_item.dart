@@ -1,13 +1,51 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class PokemonGridItem extends StatelessWidget {
+class PokemonGridItem extends StatefulWidget {
   final dynamic pokemon;
+  const PokemonGridItem({super.key, required this.pokemon});
 
-  const PokemonGridItem({
-    super.key,
-    required this.pokemon,
-  });
+  @override
+  State<PokemonGridItem> createState() => _PokemonGridItemState();
+}
+
+class _PokemonGridItemState extends State<PokemonGridItem> {
+  bool _isFavorite = false;
+  late SharedPreferences _preferences;
+  late final dynamic pokemon;
+
+  @override
+  void initState() {
+    super.initState();
+    _initPrefs();
+    pokemon = widget.pokemon;
+  }
+
+  Future<void> _initPrefs() async {
+    _preferences = await SharedPreferences.getInstance();
+    final favorites = _preferences.getStringList('favorites') ?? [];
+    setState(() {
+      _isFavorite = favorites.contains(widget.pokemon['id'].toString());
+    });
+  }
+
+  Future<void> _toggleFavorite() async {
+    final favorites = _preferences.getStringList('favorites') ?? [];
+    final pokemonId = widget.pokemon['id'].toString();
+
+    if (_isFavorite) {
+      favorites.remove(pokemonId);
+    } else {
+      favorites.add(pokemonId);
+    }
+
+    await _preferences.setStringList('favorites', favorites);
+    setState(() {
+      _isFavorite = !_isFavorite;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +93,9 @@ class PokemonGridItem extends StatelessWidget {
           enableFeedback: true,
           onTap: () {
             // Navegación al detalle del Pokémon
+          },
+          onDoubleTap: () {
+            _toggleFavorite();
           },
           child: Container(
             decoration: BoxDecoration(
