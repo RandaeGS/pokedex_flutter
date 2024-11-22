@@ -84,91 +84,110 @@ class _PokemonGridItemState extends State<PokemonGridItem> {
       return typeColors[type.toLowerCase()] ?? [Colors.grey, Colors.blueGrey];
     }
 
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(16.0),
-          enableFeedback: true,
-          onTap: () {
-            // Navegación al detalle del Pokémon
-          },
-          onDoubleTap: () {
-            _toggleFavorite();
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16.0),
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: types.map((type) => getTypeColors(type)).expand((colors) => colors).toList(),
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    formatPokemonNumber(number),
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: Colors.white,
+      return Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(16.0),
+            enableFeedback: true,
+            onTap: () {
+              // Navegación al detalle del Pokémon
+            },
+            onDoubleTap: _toggleFavorite,
+            child: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16.0),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: types.map((type) => getTypeColors(type)).expand((colors) => colors).toList(),
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  Expanded(
-                    child: Center(
-                      child: CachedNetworkImage(
-                        imageUrl: spriteUrl,
-                        fit: BoxFit.contain,
-                        placeholder: (context, url) => const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                        errorWidget: (context, url, error) => const Icon(
-                          Icons.broken_image,
-                          size: 96,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          name.toString().toUpperCase(),
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white
+                          formatPokemonNumber(number),
+                          style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            color: Colors.white,
                           ),
                         ),
-                        const SizedBox(height: 4),
-                        Wrap(
-                          spacing: 4,
-                          children: types.map((type) => Chip(
-                            label: Text(
-                              type.toString().toUpperCase(),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
+                        const SizedBox(height: 8),
+                        Expanded(
+                          child: Center(
+                            child: CachedNetworkImage(
+                              imageUrl: spriteUrl,
+                              fit: BoxFit.contain,
+                              placeholder: (context, url) => const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                              errorWidget: (context, url, error) => const Icon(
+                                Icons.broken_image,
+                                size: 96,
                               ),
                             ),
-                            backgroundColor: getTypeColors(type.toString())[0],
-                            padding: EdgeInsets.zero,
-                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          )).toList(),
+                          ),
                         ),
+                        const SizedBox(height: 8),
+                        Center(
+                          child: Column(
+                            children: [
+                              Text(
+                                name.toString().toUpperCase(),
+                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Wrap(
+                                spacing: 4,
+                                children: types.map((type) => Chip(
+                                  label: Text(
+                                    type.toString().toUpperCase(),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  backgroundColor: getTypeColors(type.toString())[0],
+                                  padding: EdgeInsets.zero,
+                                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                )).toList(),
+                              ),
+                            ],
+                          ),
+                        )
                       ],
                     ),
-                  )
-                ],
-              ),
+                  ),
+                ),
+                // Ícono de favorito con animación
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    transitionBuilder: (Widget child, Animation<double> animation) {
+                      return ScaleTransition(scale: animation, child: child);
+                    },
+                    child: Icon(
+                      _isFavorite ? Icons.favorite : Icons.favorite_border,
+                      key: ValueKey(_isFavorite),
+                      color: _isFavorite ? Colors.red : Colors.white,
+                      size: 24,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
-      ),
-    );
-  }
+      );
+    }
 }
