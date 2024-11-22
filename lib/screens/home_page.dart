@@ -3,6 +3,7 @@ import 'package:pokedex_flutter/widgets/favorites/favorite_pokemon_list.dart';
 import 'package:pokedex_flutter/widgets/popup_options/expandable_fab.dart';
 import 'package:pokedex_flutter/widgets/popup_options/popup_options_for_list.dart';
 import 'package:pokedex_flutter/widgets/popup_options/sorting_dialog.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 import 'package:string_validator/string_validator.dart';
 import '../widgets/list_pokemon.dart';
 import '../widgets/popup_options/action_button_expandable.dart';
@@ -89,9 +90,19 @@ class _HomePageState extends State<HomePage> {
 
           ),
 
-            !_showFavorites ? ListPokemon(activeFilters: activeFilters, currentSort: currentSort,
-              searchName: _searchName, searchNumber: _searchNumber, updateFilter: _updateFilter,)
-            : FavoritePokemonList()
+          SliverAnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            child: _showFavorites
+                ? FavoritePokemonList(key: const ValueKey('favorites'))
+                : ListPokemon(
+              key: const ValueKey('all'),
+              activeFilters: activeFilters,
+              currentSort: currentSort,
+              searchName: _searchName,
+              searchNumber: _searchNumber,
+              updateFilter: _updateFilter,
+            ),
+          ),
         ],
       ),
       floatingActionButton: ExpandableFab(
