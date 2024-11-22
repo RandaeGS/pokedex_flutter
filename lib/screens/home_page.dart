@@ -115,6 +115,7 @@ class _HomePageState extends State<HomePage> {
                 )
               },
               icon: const Icon(Icons.sort),
+
             ),
             ActionButton(
               onPressed: () => {
@@ -141,7 +142,17 @@ class _HomePageState extends State<HomePage> {
                   _showFavorites = !_showFavorites;
                 })
               },
-              icon: const Icon(Icons.favorite),
+              icon: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (child, animation) {
+                  return ScaleTransition(scale: animation, child: child,);
+                },
+                child: Icon(
+                  _showFavorites ? Icons.favorite : Icons.favorite_border,
+                  key: ValueKey(_showFavorites),
+                  color: _showFavorites ? Colors.red : null,
+                ),
+              ),
             ),
           ]
       ),
