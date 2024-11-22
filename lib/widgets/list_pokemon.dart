@@ -5,7 +5,7 @@ import 'package:pokedex_flutter/graphql/queries/search_pokemon_by_number.dart';
 import 'package:pokedex_flutter/widgets/popup_options/sorting_section.dart';
 import '../graphql/queries/pokemon_list_query.dart';
 
-class ListPokemon extends StatelessWidget {
+class ListPokemon extends StatefulWidget {
   final Map<String, Set<String>> activeFilters;
   final SortOption currentSort;
   final String searchName;
@@ -16,8 +16,14 @@ class ListPokemon extends StatelessWidget {
     required this.activeFilters,
     required this.currentSort,
     required this.searchName,
-    required this.searchNumber
+    required this.searchNumber,
   });
+
+  @override
+  State<ListPokemon> createState() => _ListPokemonState();
+}
+
+class _ListPokemonState extends State<ListPokemon> {
 
   String _formatPokemonNumber(int number) {
     return '#${number.toString().padLeft(3, '0')}';
@@ -48,27 +54,27 @@ class ListPokemon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final typesList = _getTypesList(activeFilters['types']);
+    final typesList = _getTypesList(widget.activeFilters['types']);
 
     return Query(
-      options: searchNumber == 0 ? QueryOptions(
-        document: gql(queryPokemonList),
-        fetchPolicy: FetchPolicy.cacheFirst,
-        variables: {
-          'types': _getTypesList(activeFilters['types']),
-          'generations': _getGenerationList(activeFilters['generations']),
-          'orderBy': currentSort.field == SortField.id
-              ? [{"id": currentSort.order == SortOrder.asc ? "asc" : "desc"}]
-              : [{"name": currentSort.order == SortOrder.asc ? "asc" : "desc"}],
-          'searchName': searchName.isEmpty ? '%%' : '%${searchName
-              .toLowerCase()}%',
-        }
+      options: widget.searchNumber == 0 ? QueryOptions(
+          document: gql(queryPokemonList),
+          fetchPolicy: FetchPolicy.cacheFirst,
+          variables: {
+            'types': _getTypesList(widget.activeFilters['types']),
+            'generations': _getGenerationList(widget.activeFilters['generations']),
+            'orderBy': widget.currentSort.field == SortField.id
+                ? [{"id": widget.currentSort.order == SortOrder.asc ? "asc" : "desc"}]
+                : [{"name": widget.currentSort.order == SortOrder.asc ? "asc" : "desc"}],
+            'searchName': widget.searchName.isEmpty ? '%%' : '%${widget.searchName
+                .toLowerCase()}%',
+          }
       ) : QueryOptions(
-        document: gql(searchPokemonByNumberQuery),
-        fetchPolicy: FetchPolicy.cacheFirst,
-        variables: {
-          'number': searchNumber
-        }
+          document: gql(searchPokemonByNumberQuery),
+          fetchPolicy: FetchPolicy.cacheFirst,
+          variables: {
+            'number': widget.searchNumber
+          }
       ),
       builder: (result, {fetchMore, refetch}) {
         if (result.isLoading) {
@@ -159,8 +165,8 @@ class ListPokemon extends StatelessWidget {
                                     Text(
                                       name.toString().toUpperCase(),
                                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white
                                       ),
                                     ),
                                     const SizedBox(height: 4),
