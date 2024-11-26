@@ -58,6 +58,7 @@ class _PopupOptionsForListState extends State<PopupOptionsForList> {
                     widget.currentFilters['generations'] = filters;
                     widget.onFiltersChanged(widget.currentFilters);
                   },
+                  expandedNotifier: generationsExpanded,
                 ),
                 FilterSection(
                   title: "Types",
@@ -88,6 +89,7 @@ class _PopupOptionsForListState extends State<PopupOptionsForList> {
                       widget.onFiltersChanged(widget.currentFilters);
                     });
                   },
+                  expandedNotifier: typesExpanded,
                 ),
                 // FilterSection(
                 //   title: "Abilities",
