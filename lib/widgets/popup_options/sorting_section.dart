@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum SortField { id, name, type, ability }
+enum SortField { id, name, type, ability, bst }
 
 enum SortOrder { asc, desc }
 
@@ -60,6 +60,16 @@ class SortingSection extends StatelessWidget {
       field: SortField.ability,
       order: SortOrder.desc,
       label: 'Ability (Z-A)',
+    ),
+    SortOption(
+      field: SortField.bst,
+      order: SortOrder.desc,
+      label: 'Low Power',
+    ),
+    SortOption(
+      field: SortField.bst,
+      order: SortOrder.asc,
+      label: 'High Power',
     ),
   ];
 
