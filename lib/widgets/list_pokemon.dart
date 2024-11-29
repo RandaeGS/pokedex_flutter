@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:pokedex_flutter/graphql/queries/pokemon_list_by_types.dart';
 import 'package:pokedex_flutter/graphql/queries/search_pokemon_by_number.dart';
 import 'package:pokedex_flutter/widgets/pokemon_grid_item.dart';
 import 'package:pokedex_flutter/widgets/popup_options/sorting_section.dart';
@@ -53,21 +54,36 @@ class _ListPokemonState extends State<ListPokemon> {
   Future<void> _fetchPage(int pageKey) async {
     try {
       final client = GraphQLProvider.of(context).value;
-      final options = widget.searchNumber == 0 ? QueryOptions(
+      final options = widget.searchNumber == 0
+          ? (widget.currentSort.field == SortField.type
+          ? QueryOptions(
+          document: gql(pokemonListByType),
+          fetchPolicy: FetchPolicy.cacheFirst,
+          variables: {
+            'offset': pageKey * _pageSize,
+            'limit': _pageSize,
+            'name': widget.currentSort.order == SortOrder.asc ? "asc" : "desc",
+            'types': _getTypesList(widget.activeFilters['types']),
+            'generations': _getGenerationList(widget.activeFilters['generations']),
+            'searchName': widget.searchName.isEmpty ? '%%' : '%${widget.searchName.toLowerCase()}%',
+          }
+      )
+          : QueryOptions(
           document: gql(queryPokemonList),
           fetchPolicy: FetchPolicy.cacheFirst,
           variables: {
-            'offset': pageKey,
+            'offset': pageKey * _pageSize,
             'limit': _pageSize,
             'types': _getTypesList(widget.activeFilters['types']),
             'generations': _getGenerationList(widget.activeFilters['generations']),
             'orderBy': widget.currentSort.field == SortField.id
                 ? [{"id": widget.currentSort.order == SortOrder.asc ? "asc" : "desc"}]
                 : [{"name": widget.currentSort.order == SortOrder.asc ? "asc" : "desc"}],
-            'searchName': widget.searchName.isEmpty ? '%%' : '%${widget.searchName
-                .toLowerCase()}%',
+            'searchName': widget.searchName.isEmpty ? '%%' : '%${widget.searchName.toLowerCase()}%',
           }
-      ) : QueryOptions(
+      )
+      )
+          : QueryOptions(
           document: gql(searchPokemonByNumberQuery),
           fetchPolicy: FetchPolicy.cacheFirst,
           variables: {
@@ -76,20 +92,24 @@ class _ListPokemonState extends State<ListPokemon> {
       );
 
       final result = await client.query(options);
-      final List pokemons = result.data!['pokemon_v2_pokemon'];
+      final List pokemons = widget.currentSort.field == SortField.type
+          ? result.data!['pokemon_v2_pokemontype']
+          .map((type) => type['pokemon_v2_pokemon'])
+          .toList()
+          : result.data!['pokemon_v2_pokemon'];
+
       final isLastPage = pokemons.length < _pageSize;
 
       if (isLastPage) {
         _pagingController.appendLastPage(pokemons);
       } else {
-        _pagingController.appendPage(pokemons, pageKey + pokemons.length);
+        _pagingController.appendPage(pokemons, pageKey + 1);
       }
 
-    }catch (error) {
+    } catch (error) {
       _pagingController.error = error;
     }
   }
-
   @override
   Widget build(BuildContext context) {
 
