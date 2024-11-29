@@ -64,12 +64,12 @@ class SortingSection extends StatelessWidget {
     SortOption(
       field: SortField.bst,
       order: SortOrder.desc,
-      label: 'Low Power',
+      label: 'Power (Highest)',
     ),
     SortOption(
       field: SortField.bst,
       order: SortOrder.asc,
-      label: 'High Power',
+      label: 'Power (Lowest)',
     ),
   ];
 
