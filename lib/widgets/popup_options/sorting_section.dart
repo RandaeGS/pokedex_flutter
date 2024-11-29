@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-enum SortField { id, name }
+enum SortField { id, name, type }
+
 enum SortOrder { asc, desc }
 
 class SortOption {
@@ -40,6 +41,16 @@ class SortingSection extends StatelessWidget {
       order: SortOrder.desc,
       label: 'Name (Z-A)',
     ),
+    SortOption(
+      field: SortField.type,
+      order: SortOrder.asc,
+      label: 'Type (A-Z)',
+    ),
+    SortOption(
+      field: SortField.type,
+      order: SortOrder.desc,
+      label: 'Type (Z-A)',
+    )
   ];
 
   const SortingSection({
@@ -54,11 +65,11 @@ class SortingSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ...options.map((option) => RadioListTile<SortOption>(
-          title: Text(option.label),
-          value: option,
-          groupValue: selectedOption,
-          onChanged: (value) => onSortChange(value!),
-        )),
+              title: Text(option.label),
+              value: option,
+              groupValue: selectedOption,
+              onChanged: (value) => onSortChange(value!),
+            )),
       ],
     );
   }
