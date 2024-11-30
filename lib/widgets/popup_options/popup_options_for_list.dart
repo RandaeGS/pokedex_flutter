@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pokedex_flutter/widgets/popup_options/filter_section.dart';
 import 'ability_autocomplete.dart';
 
+final selectedAbility = ValueNotifier<String>('');
+
 final abilitiesExpanded = ValueNotifier<bool>(false);
 
 class PopupOptionsForList extends StatefulWidget {
@@ -147,6 +149,7 @@ class _PopupOptionsForListState extends State<PopupOptionsForList> {
                                       widget.onFiltersChanged(widget.currentFilters);
                                     });
                                   },
+                                  selectedAbility: selectedAbility,
                                 ),
                               ),
                             ),
@@ -164,6 +167,7 @@ class _PopupOptionsForListState extends State<PopupOptionsForList> {
                           value.clear();
                         });
                         widget.onFiltersChanged(widget.currentFilters);
+                        selectedAbility.value = '';
                       });
                     },
                     style: OutlinedButton.styleFrom(
